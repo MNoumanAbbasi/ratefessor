@@ -1,6 +1,7 @@
 # Ratefessor
 
-![Ratefessor](https://raw.githubusercontent.com/MNoumanAbbasi/ratefessor/main/media/logo750px.png?raw=true)
+<img src="https://github.com/MNoumanAbbasi/ratefessor/blob/main/media/logo.png" alt="Ratefessor" width="200"/>
+
 A website to rate and review professors. CS340 - Databases course project.
 
 ## Requirements
