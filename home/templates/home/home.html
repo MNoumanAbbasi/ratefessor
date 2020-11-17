@@ -1,45 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{% extends "home/base.html" %} {% block content %}
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
-    />
+<div class="ui link cards">
+  {% for profile in profiles %}
 
-    <title>Ratefessor</title>
-  </head>
-  <body>
-    <div class="ui link cards">
-      {% for profile in profiles %}
-
-      <div class="card">
-        <div class="image">
-          <!-- <img src="/images/avatar2/large/matthew.png" /> -->
-        </div>
-        <div class="content">
-          <div class="header">{{ profile.name }}</div>
-          <div class="meta">
-            <a>{{ profile.position }}</a>
-          </div>
-          <!-- <div class="description">
-            
-          </div> -->
-        </div>
-        <div class="extra content">
-          <span class="right floated"> {{ profile.dept_name }} </span>
-          <span>
-            <i class="star icon"></i>
-            4.7/5.0
-          </span>
-        </div>
-      </div>
-
-      {% endfor %}
+  <div class="card">
+    <div class="image">
+      <!-- <img src="/images/avatar2/large/matthew.png" /> -->
     </div>
+    <div class="content">
+      <div class="header">{{ profile.name }}</div>
+      <div class="meta">
+        <a>{{ profile.position }}</a>
+      </div>
+      <!-- <div class="description">
+          
+        </div> -->
+    </div>
+    <div class="extra content">
+      <span class="right floated"> {{ profile.dept_name }} </span>
+      <span>
+        <i class="star icon"></i>
+        4.7/5.0
+      </span>
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-  </body>
-</html>
+  {% endfor %}
+</div>
+
+{% endblock content %}
