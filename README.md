@@ -11,5 +11,7 @@ A website to rate and review professors. CS340 - Databases course project.
 
 ## For developers
 
-Run the server using: `python manage.py runserver`
-Then open the website at URL: `localhost:8000/`
+1. Clone the repository: `git clone https://github.com/MNoumanAbbasi/ratefessor.git`
+2. Go to directory: `cd ratefessor`
+3. Run the server using: `python3 manage.py runserver`
+4. Then open the website at URL: `localhost:8000/`
