@@ -24,11 +24,10 @@ CREATE TABLE professor (
 ); 
 
 CREATE TABLE section (
-    course_name TEXT, 
-    sec_id INTEGER, 
+    course_name TEXT,  
     semester varchar(6) check (semester in ('Fall', 'Spring', 'Summer')), 
     year numeric(4,0) check (year > 1980 and year < 2200), 
-    primary key (course_name, sec_id, semester, year), 
+    primary key (course_name, semester, year), 
     foreign key (course_name) references course on delete cascade 
 );
 
@@ -37,7 +36,7 @@ CREATE TABLE prof_sec (
     course_name TEXT, 
     semester varchar(6), 
     year numeric(4,0),   
-    primary key (prof_id, course_name), 
+    primary key (prof_id, course_name, semester, year),
     foreign key (prof_id) references professor on delete cascade, 
     foreign key (course_name, semester, year) references section on delete cascade
 );
