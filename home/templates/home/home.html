@@ -24,5 +24,42 @@
     </div>
   </div> -->
 
+<!-- Search buttons -->
+<div class = "row centered">
+  <div class="col-md-6">
+    <a href="{% url 'search-professor' %}">
+      <button
+        style="margin:5px;"
+        class="btn btn-primary"
+        type="button"
+      >
+        Search by Professor
+      </button>
+    </a>
+  </div>
+
+  <div class="col-md-6">
+    <a href="{% url 'search-course' %}"">
+      <button 
+        style="margin:5px;"
+        class="btn btn-primary"
+        type="button"
+      >
+        Search by Course
+      </button>
+    </a>
+  </div>
+
+  <div class="col-md-6">
+    <a href="{% url 'search-combo' %}">
+      <button 
+        style="margin:5px;"
+        class="btn btn-primary"
+        type="button"
+      >
+        Search by Combo
+      </button>
+    </a>
+</div>
 
 {% endblock content %}
