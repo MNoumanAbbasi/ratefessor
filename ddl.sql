@@ -1,3 +1,18 @@
+-- Uncomment to delete exisiting tables and start fresh
+PRAGMA foreign_keys = OFF;
+DROP TABLE IF EXISTS professor;
+DROP TABLE IF EXISTS section;
+DROP TABLE IF EXISTS prof_sec;
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS course;
+DROP TABLE IF EXISTS offers;
+DROP TABLE IF EXISTS rating;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS votes;
+DROP TABLE IF EXISTS users;
+PRAGMA foreign_keys = ON;
+
+
 CREATE TABLE professor (
     prof_id INTEGER, 
     name TEXT not null, 
