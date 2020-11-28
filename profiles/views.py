@@ -28,21 +28,16 @@ def professor(request, id):
                for r in cursor.fetchall()]
 
     # TODO: Remove afterwards. Hard coded for testing:
-    courses.append({'name': 'Intro. to Programming',
-                    'semester': 'Fall', 'year': 2019})
-    courses.append({'name': 'Intro. to Programming',
-                    'semester': 'Fall', 'year': 2019})
-    courses.append({'name': 'Databases',
-                    'semester': 'Fall', 'year': 2019})
-    courses.append({'name': 'Intro. to Computer Science',
-                    'semester': 'Fall', 'year': 2019})
-    courses.append({'name': 'Probability',
-                    'semester': 'Fall', 'year': 2019})
+    courses.append({'name': 'Intro. to Programming', 'semester': 'Fall', 'year': 2019})
+    courses.append({'name': 'Intro. to Programming', 'semester': 'Fall', 'year': 2019})
+    courses.append({'name': 'Databases', 'semester': 'Fall', 'year': 2019})
+    courses.append({'name': 'Intro. to Computer Science', 'semester': 'Fall', 'year': 2019})
+    courses.append({'name': 'Probability', 'semester': 'Fall', 'year': 2019})
 
     # Fetching reviews for this professor
     cursor.execute("SELECT * FROM review WHERE prof_id = ?;", (id,))
-    reviews = [{'user_id': r[1], 'text': r[2], 'date': r[3], 'course_name': r[5],
-                'semester': r[6], 'year': r[7]} for r in cursor.fetchall()]
+    reviews = [{'user_id': r[1], 'text': r[2], 'date': r[3], 'course_name': r[5], 'semester': r[6], 'year': r[7]}
+               for r in cursor.fetchall()]
 
     # TODO: Remove afterwards. Hard coded for testing:
     reviews.append({'user_id': 1, 'text': 'Very good instructor. Recommended',
@@ -62,19 +57,34 @@ def course(request, course_name):
     # Fetching course from DB
     conn = sqlite3.connect('./db.sqlite3')
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM course WHERE course_name = ?;", (course_name,))
+    cursor.execute("SELECT * FROM course WHERE course_name = ?;", (course_name,))
     row = cursor.fetchone()
 
     # If no professor found with that id
     if row is None:
         return HttpResponseBadRequest('No course found!')
-    else:
-        context = {
-            'course_name': row[0],
-            'level': row[1]
-        }
-        return render(request, 'profiles/course.html', context)
+
+    course = {
+        'course_name': row[0],
+        'level': row[1]
+    }
+
+    # Now fetching all the professors that offered this course
+    cursor.execute("SELECT * FROM prof_sec WHERE course_name = ?;", (course_name,))
+    professors = []
+    for row in cursor.fetchall():
+        prof_id = row[0]
+        cursor.execute("SELECT * FROM professor WHERE prof_id = ?;", (prof_id,))
+        r = cursor.fetchone()
+        if r:
+            professors.append({'id': r[0], 'name': r[1], 'position': r[2], 'dept_name': r[3]})
+
+    context = {
+        'professors': professors,
+        'course': course
+    }
+
+    return render(request, 'profiles/course.html', context)
 
 
 def combo(request):
