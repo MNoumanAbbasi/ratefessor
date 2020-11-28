@@ -18,7 +18,7 @@ profiles = [
 #     return render(request, 'home/home.html', context)
 
 def home(request):
-    return render(request, 'home/index.html')
+    return render(request, 'home/home.html')
 
 def signin(request):
     return render(request, 'home/signin.html')
