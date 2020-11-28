@@ -1,3 +1,18 @@
+-- Uncomment to delete exisiting tables and start fresh
+PRAGMA foreign_keys = OFF;
+DROP TABLE IF EXISTS professor;
+DROP TABLE IF EXISTS section;
+DROP TABLE IF EXISTS prof_sec;
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS course;
+DROP TABLE IF EXISTS offers;
+DROP TABLE IF EXISTS rating;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS votes;
+DROP TABLE IF EXISTS users;
+PRAGMA foreign_keys = ON;
+
+
 CREATE TABLE professor (
     prof_id INTEGER, 
     name TEXT not null, 
@@ -9,11 +24,10 @@ CREATE TABLE professor (
 ); 
 
 CREATE TABLE section (
-    course_name TEXT, 
-    sec_id INTEGER, 
+    course_name TEXT,  
     semester varchar(6) check (semester in ('Fall', 'Spring', 'Summer')), 
     year numeric(4,0) check (year > 1980 and year < 2200), 
-    primary key (course_name, sec_id, semester, year), 
+    primary key (course_name, semester, year), 
     foreign key (course_name) references course on delete cascade 
 );
 
@@ -22,7 +36,7 @@ CREATE TABLE prof_sec (
     course_name TEXT, 
     semester varchar(6), 
     year numeric(4,0),   
-    primary key (prof_id, course_name), 
+    primary key (prof_id, course_name, semester, year),
     foreign key (prof_id) references professor on delete cascade, 
     foreign key (course_name, semester, year) references section on delete cascade
 );

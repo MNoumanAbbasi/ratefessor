@@ -1,32 +1,28 @@
-{% extends "home/base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %} {% load static %}
 
 
-<div class="ui link cards">
-  {% for profile in profiles %}
+<div class="bg d-md-block d-none"></div>
 
-  <div class="card">
-    <div class="image">
-      <!-- <img src="/images/avatar2/large/matthew.png" /> -->
-    </div>
-    <div class="content">
-      <div class="header">{{ profile.name }}</div>
-      <div class="meta">
-        <a>{{ profile.position }}</a>
+<!-- <div class="row centered">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
       </div>
-      <!-- <div class="description">
-          
-        </div> -->
     </div>
-    <div class="extra content">
-      <span class="right floated"> {{ profile.dept_name }} </span>
-      <span>
-        <i class="star icon"></i>
-        4.7/5.0
-      </span>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
     </div>
-  </div>
+  </div> -->
 
-  {% endfor %}
-</div>
 
 {% endblock content %}
