@@ -50,11 +50,11 @@ INSERT INTO course (course_name, level) VALUES ('Calculus', 'UG');
 INSERT INTO course (course_name, level) VALUES ('Linear Algebra', 'UG');
 
 -- Adding section
-INSERT INTO section (course_name, sec_id, semester, year) VALUES ('Intro. to Computer Science', 1, 'Fall', 2019);
-INSERT INTO section (course_name, sec_id, semester, year) VALUES ('Intro. to Computer Science', 2, 'Spring', 2019);
-INSERT INTO section (course_name, sec_id, semester, year) VALUES ('Databases', 1, 'Fall', 2018);
-INSERT INTO section (course_name, sec_id, semester, year) VALUES ('Databases', 1, 'Fall', 2019);
-INSERT INTO section (course_name, sec_id, semester, year) VALUES ('Databases', 1, 'Fall', 2020);
+INSERT INTO section (course_name, semester, year) VALUES ('Intro. to Computer Science', 'Fall', 2019);
+INSERT INTO section (course_name, semester, year) VALUES ('Intro. to Computer Science', 'Spring', 2019);
+INSERT INTO section (course_name, semester, year) VALUES ('Databases', 'Fall', 2018);
+INSERT INTO section (course_name, semester, year) VALUES ('Databases', 'Fall', 2019);
+INSERT INTO section (course_name, semester, year) VALUES ('Databases', 'Fall', 2020);
 
 -- Adding prof_sec
 INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (1, 'Intro. to Computer Science', 'Fall', 2019);

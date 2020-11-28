@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<div class="container">
+  <h2>Professor: {{ professor.name }}</h2>
+  <p>{{ professor.position }}</p>
+  <p>{{ professor.dept_name }}</p>
+  <p>{{ professor.qualification }}</p>
+
+  <!-- Courses offered block -->
+  <hr />
+  <h4>Courses offered by {{ professor.name }}:</h4>
+  <div class="row">
+    {% for course in courses %}
+    <div class="col-sm-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ course.name }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ course.semester }}, {{ course.year }}
+          </h6>
+          <p class="card-text">Rating?</p>
+          <a href="{% url 'course-profile' course.name %}" class="card-link"
+            >View course</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Reviews block -->
+  <hr />
+  <h4>Reviews:</h4>
+  <div class="row">
+    {% for review in reviews %}
+    <div class="col-sm-12">
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text float-right"><i class="fa fa-star"></i>Rating</p>
+          <h5 class="card-title">{{ review.course_name }}</h5>
+          <p class="card-text">{{ review.text }}</p>
+          <small class="text-muted font-italic float-right"
+            >User: {{ review.user_id }}</small
+          >
+          <p class="card-text">
+            <small class="text-muted">{{ review.date }}</small>
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

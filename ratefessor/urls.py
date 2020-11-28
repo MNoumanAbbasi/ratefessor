@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('home.urls')),
     re_path(r'^accounts/', include('accounts.urls')),
 
+    path('profile/', include('profiles.urls')),
 ]
