@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<!-- <h1>SignIn</h1>
+<form class="site-form" action="{% url 'accounts:signin' %}" method="post">
+    {% csrf_token %}
+    {{ form.username }}
+    {% if request.GET.next %}
+      <input type="hidden" name="next" value={{request.GET.next}}>
+    {% endif %}
+    <input type="submit" value="SignIn">
+</form> -->
+
+<main class="d-flex align-items-center min-vh-100 py-3 py-md-0 change-font change-bg">
+    <div class="container">
+      <div class="card login-card">
+        <div class="row no-gutters">
+          <div class="col-md-5">
+            <img src="{% static 'home/images/signin.jpg'%}" alt="login" class="login-card-img">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
+              <div class="brand-wrapper">
+                <img src="{% static 'home/images/logo.png'%}" alt="logo" class="logo">
+              </div>
+              <p class="login-card-description">Sign into your account</p>
+
+              <form class="site-form" action="{% url 'accounts:signin' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="email" class="sr-only">Email</label>
+                  <input type="text" name="{{form.username.html_name}}" id="{{ form.username.id_for_label }}" class="form-control" placeholder="Email address" value="{{ form.username.value|default_if_none:''  }}">
+                  {% for error in form.username.errors %}
+                  <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+                </div>
+                <div class="form-group mb-4">
+                  <label for="password" class="sr-only">Password</label>
+                  <input type="password" name="{{form.password.html_name}}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="***********" value="{{ form.password.value|default_if_none:''  }}">
+                  {% for error in form.password.errors %}
+                  <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+                </div>
+                {% if request.GET.next %}
+                  <input type="hidden" name="next" value={{request.GET.next}}>
+                {% endif %}
+                <input type="submit" name="login" id="login" class="btn btn-block login-btn mb-4" type="button" value="Sign In">
+              </form>
+
+                <a href='' class="forgot-password-link">Forgot password?</a>
+                <p class="login-card-footer-text">Don't have an account? <a href="{% url 'accounts:signup' %}" class="text-reset">Sign Up here</a></p>
+                <nav class="login-card-footer-nav">
+                  <a href="{% url 'app-home' %}">Back to Home</a>
+                </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+  </main>
+
+
+{% endblock content %}

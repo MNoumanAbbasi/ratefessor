@@ -34,51 +34,6 @@
     <title>Ratefessor</title>
   </head>
   <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-      <a href="{% url 'home' %}">
-        <img
-          alt="brand logo"
-          src="{% static 'images/logo.png'%}"
-          class="brand-logo left logo"
-        />
-      </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav navbar-fonts ml-auto justify-content-end">
-          <li class="nav-item">
-            <a href="{% url 'signin' %}">
-              <button
-                class="btn light-button mr-lg-3 my-2 my-lg-0 form-rounded"
-                type="button"
-              >
-                SIGN IN
-              </button>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'signup' %}">
-              <button
-                class="btn dark-button mr-lg-3 my-2 my-lg-0 form-rounded"
-                type="button"
-              >
-                SIGN UP
-              </button>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
 
     {% block content %} {% endblock %}
     <!-- <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script> -->
