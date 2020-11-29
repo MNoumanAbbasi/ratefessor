@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+
+<div class="bg d-md-block d-none"></div>
+
+<!-- <div class="row centered">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <img alt="brand logo" src="{% static 'home/images/logo.png'%}" class="brand-logo left logo"/>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+    
+          <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav navbar-fonts ml-auto justify-content-end">
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+        
+                <form class="logout-link" action="{% url 'accounts:signout' %}" method="post">
+                  {% csrf_token %}
+                  <button 
+                  class="btn light-button mr-lg-3 my-2 my-lg-0 form-rounded"
+                  type="submit" name="button">SIGN OUT</button>
+                </form>
+              </li>
+              <li>
+                <a href="{% url 'review' %}">
+                  <button
+                    class="btn light-button mr-lg-3 my-2 my-lg-0 form-rounded"
+                    type="button"
+                  >
+                    REVIEW
+                  </button>
+                </a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a href="{% url 'accounts:signin' %}">
+                  <button
+                    class="btn light-button mr-lg-3 my-2 my-lg-0 form-rounded"
+                    type="button"
+                  >
+                    SIGN IN
+                  </button>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'accounts:signup' %}">
+                  <button
+                    class="btn dark-button mr-lg-3 my-2 my-lg-0 form-rounded"
+                    type="button"
+                  >
+                    SIGN UP
+                  </button>
+                </a>
+              </li>
+              {% endif %}
+              {% block content2 %} {% endblock content2 %}
+            </ul>
+          </div>
+    </nav>
+    <div class="bg d-md-block d-none"></div>
+
+{% endblock content %}

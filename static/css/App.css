@@ -1,8 +1,9 @@
 /* {% load static %} */
 
-body, html {
-    height: 100%;
-  }
+body,
+html {
+  height: 100%;
+}
 
 .bg {
   background-image: url('../home/images/home-bg.jpg');
@@ -66,12 +67,91 @@ body, html {
 }
 
 .centered {
-    position: absolute;
-    top: 50%;
-    left: 30%;
-    transform: translate(-50%, -50%);
-    display: inline-block;
-  }
+  position: absolute;
+  top: 50%;
+  left: 24%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+}
+
+.light-button-home {
+  /* border: 1px solid #7579e7; */
+  /* border-right: 1px solid #7579e7; */
+  background-color: #ffffff;
+  border-radius: 31px;
+  /* padding: 4px 12px 5px 12px; */
+  font-size: 12px;
+  color: #7579e7;
+}
+
+.light-button-home:hover {
+  background-color: #7579e7;
+  border-color: #7579e7;
+  color: white;
+}
+
+.content {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  width: auto;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: grey;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #7579e7;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 0 4px rgba(21, 156, 228, 0.7);
+  outline: none;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 
 /* -------------LOGIN PAGE----------------- */
 
@@ -166,6 +246,25 @@ body, html {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.adjusted-form {
+  margin-top: 0 !important;
+  padding: 0%;
+}
+
+.adjusted-btn {
+  margin: 0 0;
+}
+
+/* Styles for wrapping the search box */
+
+.main {
+  width: 50%;
+  margin: 50px auto;
+}
+
+/* Bootstrap 4 text input with search icon */
+
 @media (max-width: 767px) {
   .login-card-footer-text {
     margin-bottom: 10px;
@@ -178,6 +277,65 @@ body, html {
 }
 
 /* -------------LOGIN PAGE----------------- */
+
+/* -------------Professors Page------------- */
+
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+.roboto-font {
+  font-family: 'Roboto', sans-serif;
+  color: gray;
+}
+
+.top-header {
+  line-height: 0.7;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.img-fluid-prof {
+  max-width: 80%;
+  height: auto;
+}
+
+.img-fluid-search {
+  max-width: 100%;
+  margin-left: 18%;
+  height: auto;
+}
+
+.prof-card {
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  transition: transform 0.5s;
+}
+
+.prof-card:hover {
+  transform: scale(1.05);
+}
+
+.sm-text {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.sm-text-1 {
+  font-size: 14px;
+}
+
+.green-tab {
+  background-color: #00c853;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 3px 5px 3px;
+}
+
+.green-text {
+  color: #4caf50;
+}
+
+/* -------------Professors Page------------- */
 
 @media only screen and (max-width: 990px) {
   ul.navbar-nav.navbar-fonts {

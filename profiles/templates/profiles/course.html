@@ -1,16 +1,46 @@
-{% extends "base.html" %} {% block content %}
+{% extends "home.html" %} {% block content %} {% load static %}
 
 <div class="container">
-  <h2>Course: {{ course.course_name }}</h2>
-  <p>{{ course.level }}</p>
+
+  <!-- Top Black -->
+  <div class="container grad top-header">
+    <div class="row align-items-center shadow rounded-lg ">
+        <div class="col-lg ml-4 ">
+          <h4>Course: {{ course.course_name }}</h4>
+          <h4>Level: {{ course.level }}</h4>
+      
+            <div class="d-flex row py-2 px-2 bg-light">
+              <div class="green-tab p-2 px-3 mx-2">
+                  <p class="sm-text mb-0">OVERALL RATING</p>
+                  <h4>4.8</h4>
+              </div>
+              <div class="white-tab p-2 mx-2 text-muted">
+                  <p class="sm-text mb-0">ALL REVIEWS</p>
+                  <h4>124</h4>
+              </div>
+              <div class="white-tab p-2 mx-2">
+                  <p class="sm-text mb-0 text-muted">POSITIVE REVIEWS</p>
+                  <h4 class="green-text">93%</h4>
+              </div>
+              <div class="ml-md-auto p-2 mx-md-2 pt-4 pt-md-3"></div>
+          </div>
+        </div>
+        <div class="col-lg">
+          <img src="{% static 'images/Course.png'%}" class="img-fluid-prof" alt="graphics">
+          </div>
+    </div>
+</div>
+
 
   <!-- Professors offering this course -->
   <hr />
-  <h4>Course offered by:</h4>
+  <h4 class="text-center roboto-font">Course offered by</h4>
+  <hr />
+
   <div class="row">
     {% for professor in professors %}
     <div class="col-sm-4">
-      <div class="card mb-4">
+      <div class="card mb-4 prof-card">
         <div class="card-body">
           <h5 class="card-title">{{ professor.name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">
@@ -20,6 +50,32 @@
           <a href="{% url 'professor-profile' professor.id %}" class="card-link"
             >View professor</a
           >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Reviews block -->
+  <hr />
+  <h3 class="text-center  roboto-font">Reviews</h3>
+  <hr />
+
+  <div class="row">
+    {% for review in reviews %}
+    <div class="col-sm-12">
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text float-right"><i class="fa fa-star"></i>Rating</p>
+          <h5 class="card-title">{{ review.course_name }}</h5>
+          <p class="card-text">{{ review.text }}</p>
+          
+          <small class="text-muted font-italic float-right"
+            >User: {{ review.user_id }}</small
+          >
+          <p class="card-text">
+            <small class="text-muted">{{ review.date }}</small>
+          </p>
         </div>
       </div>
     </div>
