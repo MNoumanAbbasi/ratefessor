@@ -20,7 +20,7 @@ profiles = [
 #     return render(request, 'home/home.html', context)
 
 def home(request):
-    return render(request, 'home/home.html')
+    return render(request, 'home/home_search_view.html')
 
 @login_required(login_url="/accounts/signin/")
 def home_review(request):
