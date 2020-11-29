@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+  <!-- Search bar -->
+  <form action = "{% url 'search-professor' %}" class="form-inline active-purple-3 active-purple-4", method = "get">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input name = "prof_query" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
+  </form>
+
+  <!-- Printing the status -->
+  {% if status == "No query" %} <h4> No Search Results yet </h4> 
+  {% elif status == "Not found" %} <h4> This professor does not exist. Please enter another professor name. </h4> 
+  {% else %} <h4> {{ status }} result(s) found </h4>  {% endif %}
+
+  <hr/>
+
+  <!-- Printing the professor list -->
+  <div class="row">
+    {% for professor in professor_list %}
+    <div class="col-sm-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ professor.name }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ professor.position }}, {{ professor.qualification }}
+          </h6>
+          <p class="card-text"> {{ professor.dept_name }} </p>
+          <a href="{% url 'professor-profile' professor.id %}" class="card-link"> View professor </a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Back to home link -->
+  <a href="{% url 'app-home' %}"> Back to Home page </a>
+
+{% endblock content %}
