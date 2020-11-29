@@ -29,7 +29,7 @@ def search_professor(request):
     else: status = len(professor_list)
 
     # TODO: Remove afterwards. Hard coded for testing:
-    hard_code = True
+    hard_code = False
     if hard_code:
         professor_list.append({'id': 50, 'name': 'Nouman Abbasi', 'position': 'Department Chair', 'dept_name': 'Computer Science', 'qualification': "Bht kuch"})
         print(professor_list)
