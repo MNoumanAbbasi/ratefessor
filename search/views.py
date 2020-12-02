@@ -1,13 +1,35 @@
 from django.shortcuts import render
+from django.http import HttpResponseBadRequest
 import sqlite3
 # Create your views here.
 
-def search_professor(request):
+def loading(request):
+    query = request.GET.get('search_query')
+    prof = request.GET.get('professor')
+    course = request.GET.get('course')
+    comb = request.GET.get('combined')
+
+    print(query)
+    print(prof)
+    print(course)
+    print(comb)
+
+    if prof == "1" and course == "0" and comb == "0":
+        return search_professor(request, query)
+    elif course == "1" and prof == "0" and comb == "0":
+        return search_course(request, query)
+    elif comb == "1" and course == "0" and prof == "0":
+        return search_combo(request, query)
+    else:
+        return HttpResponseBadRequest('Choose one option!')
+
+def search_professor(request, query):
     status = ""
     professor_list = []
 
     # Getting search results
-    query = request.GET.get('prof_query')
+    # query = request.GET.get('prof_query')
+    query = query
 
     # TODO: Remove afterwards. Printed for testing
     print(query)
@@ -43,11 +65,13 @@ def search_professor(request):
 
     return render(request, 'search/search_professor.html', context)
 
-def search_course(request):
+def search_course(request, query):
     status = ""
     course_list = []
+
     # Getting search results
-    query = request.GET.get('course_query')
+    # query = request.GET.get('course_query')
+    query = query
 
     # TODO: Remove afterwards. Printed for testing
     print(query)
@@ -76,11 +100,12 @@ def search_course(request):
 
     return render(request, 'search/search_course.html', context)
 
-def search_combo(request):
+def search_combo(request, query):
     status = ""
     
     # Getting search results
-    query = request.GET.get('comb_query')
+    # query = request.GET.get('comb_query')
+    query = query
 
     # TODO: Remove afterwards. Printed for testing
     print(query)
