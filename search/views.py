@@ -4,32 +4,30 @@ import sqlite3
 # Create your views here.
 
 def loading(request):
-    query = request.GET.get('search_query')
     prof = request.GET.get('professor')
     course = request.GET.get('course')
     comb = request.GET.get('combined')
 
-    print(query)
     print(prof)
     print(course)
     print(comb)
 
     if prof == "1" and course == "0" and comb == "0":
-        return search_professor(request, query)
+        return search_professor(request)
     elif course == "1" and prof == "0" and comb == "0":
-        return search_course(request, query)
+        return search_course(request)
     elif comb == "1" and course == "0" and prof == "0":
-        return search_combo(request, query)
+        return search_combo(request)
     else:
         return HttpResponseBadRequest('Choose one option!')
 
-def search_professor(request, query):
+def search_professor(request):
     status = ""
     professor_list = []
 
     # Getting search results
-    # query = request.GET.get('prof_query')
-    query = query
+    query = request.GET.get('search_query')
+    # query = query
 
     # TODO: Remove afterwards. Printed for testing
     print(query)
@@ -65,13 +63,13 @@ def search_professor(request, query):
 
     return render(request, 'search/search_professor.html', context)
 
-def search_course(request, query):
+def search_course(request):
     status = ""
     course_list = []
 
     # Getting search results
-    # query = request.GET.get('course_query')
-    query = query
+    query = request.GET.get('search_query')
+    # query = query
 
     # TODO: Remove afterwards. Printed for testing
     print(query)
@@ -100,12 +98,12 @@ def search_course(request, query):
 
     return render(request, 'search/search_course.html', context)
 
-def search_combo(request, query):
+def search_combo(request):
     status = ""
     
     # Getting search results
-    # query = request.GET.get('comb_query')
-    query = query
+    query = request.GET.get('search_query')
+    # query = query
 
     # TODO: Remove afterwards. Printed for testing
     print(query)
@@ -121,8 +119,17 @@ def search_combo(request, query):
     print(status)
 
     #Query DB according to filters results and the comb_query
+    #SELECT * FROM prof_sec INNER JOIN professor ON prof_sec.prof_id=professor.prof_id WHERE professor.name = 'Algebra' OR prof_sec.course_name LIKE 'Algebra'
+    conn = sqlite3.connect('./db.sqlite3')
+    cursor = conn.cursor()
+    cursor.execute("SELECT professor.prof_id, professor.name, prof_sec.course_name FROM prof_sec INNER JOIN professor ON prof_sec.prof_id=professor.prof_id WHERE professor.name = ? OR prof_sec.course_name LIKE ?;", (query, f'%{query}%',))
     #Send the data recieved
+    print(cursor.fetchall())
+
+    # combo_list = [{'prof_id': item[0], 'prof_name': item[5], 'course_name': item[1]} for item in cursor.fetchall()]
     
+
+
     context = {
         'status': query,
     }
