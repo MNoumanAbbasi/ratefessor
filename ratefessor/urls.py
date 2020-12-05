@@ -23,4 +23,5 @@ urlpatterns = [
     re_path(r'^accounts/', include('accounts.urls')),
 
     path('profile/', include('profiles.urls')),
+    path('addReview/', include('review.urls'))
 ]
