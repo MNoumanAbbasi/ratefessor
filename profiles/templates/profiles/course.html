@@ -1,36 +1,38 @@
-{% extends "home/home.html" %} {% block content3 %} {% load static %}
+{% include "navbar.html" %} {% block content %} {% load static %}
 
 <div class="container top-margin">
-
   <!-- Top Black -->
   <div class="container grad top-header">
-    <div class="row align-items-center shadow rounded-lg ">
-        <div class="col-lg ml-4 ">
-          <h4>Course: {{ course.course_name }}</h4>
-          <h4>Level: {{ course.level }}</h4>
-      
-            <div class="d-flex row py-2 px-2 bg-light">
-              <div class="green-tab p-2 px-3 mx-2">
-                  <p class="sm-text mb-0">OVERALL RATING</p>
-                  <h4>4.8</h4>
-              </div>
-              <div class="white-tab p-2 mx-2 text-muted">
-                  <p class="sm-text mb-0">ALL REVIEWS</p>
-                  <h4>124</h4>
-              </div>
-              <div class="white-tab p-2 mx-2">
-                  <p class="sm-text mb-0 text-muted">POSITIVE REVIEWS</p>
-                  <h4 class="green-text">93%</h4>
-              </div>
-              <div class="ml-md-auto p-2 mx-md-2 pt-4 pt-md-3"></div>
-          </div>
-        </div>
-        <div class="col-lg">
-          <img src="{% static 'images/Course.png'%}" class="img-fluid-prof" alt="graphics">
-          </div>
-    </div>
-</div>
+    <div class="row align-items-center shadow rounded-lg">
+      <div class="col-lg ml-4">
+        <h4>Course: {{ course.course_name }}</h4>
+        <h4>Level: {{ course.level }}</h4>
 
+        <div class="d-flex row py-2 px-2 bg-light">
+          <div class="green-tab p-2 px-3 mx-2">
+            <p class="sm-text mb-0">OVERALL RATING</p>
+            <h4>4.8</h4>
+          </div>
+          <div class="white-tab p-2 mx-2 text-muted">
+            <p class="sm-text mb-0">ALL REVIEWS</p>
+            <h4>124</h4>
+          </div>
+          <div class="white-tab p-2 mx-2">
+            <p class="sm-text mb-0 text-muted">POSITIVE REVIEWS</p>
+            <h4 class="green-text">93%</h4>
+          </div>
+          <div class="ml-md-auto p-2 mx-md-2 pt-4 pt-md-3"></div>
+        </div>
+      </div>
+      <div class="col-lg">
+        <img
+          src="{% static 'images/Course.png'%}"
+          class="img-fluid-prof"
+          alt="graphics"
+        />
+      </div>
+    </div>
+  </div>
 
   <!-- Professors offering this course -->
   <hr />
@@ -58,7 +60,7 @@
 
   <!-- Reviews block -->
   <hr />
-  <h3 class="text-center  roboto-font">Reviews</h3>
+  <h3 class="text-center roboto-font">Reviews</h3>
   <hr />
 
   <div class="row">
@@ -69,7 +71,7 @@
           <p class="card-text float-right"><i class="fa fa-star"></i>Rating</p>
           <h5 class="card-title">{{ review.course_name }}</h5>
           <p class="card-text">{{ review.text }}</p>
-          
+
           <small class="text-muted font-italic float-right"
             >User: {{ review.user_id }}</small
           >
@@ -83,4 +85,4 @@
   </div>
 </div>
 
-{% endblock content3 %}
+{% endblock content %}
