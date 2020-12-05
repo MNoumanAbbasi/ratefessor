@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+{% include "navbar.html" %}
+
+<div class="container top-margin">
+  <!-- Top Black -->
+  <div class="container grad top-header">
+    <div class="row align-items-center shadow rounded-lg">
+      <div class="col-lg ml-4 mt-4">
+        <a href="{% url 'course-profile' course_name %}" class="card-link float-right mt-3">View course</a>
+        <h4>Course: {{ course_name }}</h4>
+        <a href="{% url 'professor-profile' prof_id %}" class="card-link float-right mt-3">View professor</a>
+        <h4>Offered by: {{ prof_name }}</h4>
+
+        <div class="d-flex row px-2 bg-light rounded pt-3 mt-3">
+          <div class="green-tab p-2 px-3 mx-2">
+            <p class="sm-text mb-0">OVERALL RATING</p>
+            <h4>{{ avgs.overall }}</h4>
+          </div>
+
+          <div class="white-tab p-2 mx-2">
+            <p class="sm-text mb-0 text-muted">WORKLOAD</p>
+            <h4 class="green-text">{{ avgs.workload }}</h4>
+          </div>
+          <div class="white-tab p-2 mx-2">
+            <p class="sm-text mb-0 text-muted">LEARNING</p>
+            <h4 class="green-text">{{ avgs.learning }}</h4>
+          </div>
+          <div class="white-tab p-2 mx-2">
+            <p class="sm-text mb-0 text-muted">GRADING</p>
+            <h4 class="green-text">{{ avgs.grading }}</h4>
+          </div>
+          <div class="white-tab p-2 mx-2 text-muted">
+            <p class="sm-text mb-0">REVIEWS</p>
+            <h4>{{ num_reviews }}</h4>
+          </div>
+          <div class="ml-md-auto p-2 mx-md-2 pt-4 pt-md-3"></div>
+        </div>
+      </div>
+      <div class="col-lg">
+        <img src="{% static 'images/Course.png'%}" class="img-fluid-prof" alt="graphics" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews block -->
+  <hr />
+  <a href="{% url 'add-review' prof_id course_name %}" class="btn dark-button float-right">Add Review</a>
+  <h3 class="text-center roboto-font">Reviews</h3>
+  <hr />
+
+  <div class="row">
+    {% for review in reviews %}
+    <div class="col-sm-12">
+      <div class="card mb-3">
+        <div class="card-body p-2 pl-3">
+          <!-- <div class=""></div> -->
+          <div class="card-text float-right bg-light ml-4 p-2 rounded">
+            <p class="mb-1"><i class="fa fa-star text-warning"></i>
+              <span class="sm-text mb-0 text-muted">WORKLOAD:</span> {{ review.workload }}
+            </p>
+            <p class="mb-1"><i class="fa fa-star text-warning"></i>
+              <span class="sm-text mb-0 text-muted">LEARNING:</span> {{ review.learning }}
+            </p>
+            <p class="mb-1"><i class="fa fa-star text-warning"></i>
+              <span class="sm-text mb-0 text-muted">GRADING:</span> {{ review.grading }}
+            </p>
+          </div>
+          <h5 class="card-title">{{ review.course_name }}</h5>
+          <p class="card-text">{{ review.text }}</p>
+          <hr />
+          <small class="text-muted">{{ review.semester }}, {{ review.year }}</small>
+          <small class="text-muted float-right">{{ review.date }} | <i>User: {{ review.user_id }}</i></small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}
