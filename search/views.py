@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest
 import sqlite3
+import numpy as np
 # Create your views here.
 
 def loading(request):
@@ -104,7 +105,6 @@ def search_combo(request):
     # Getting search results
     query = request.GET.get('search_query')
     # query = query
-
     # TODO: Remove afterwards. Printed for testing
     print(query)
 
@@ -122,16 +122,31 @@ def search_combo(request):
     #SELECT * FROM prof_sec INNER JOIN professor ON prof_sec.prof_id=professor.prof_id WHERE professor.name = 'Algebra' OR prof_sec.course_name LIKE 'Algebra'
     conn = sqlite3.connect('./db.sqlite3')
     cursor = conn.cursor()
-    cursor.execute("SELECT professor.prof_id, professor.name, prof_sec.course_name FROM prof_sec INNER JOIN professor ON prof_sec.prof_id=professor.prof_id WHERE professor.name = ? OR prof_sec.course_name LIKE ?;", (query, f'%{query}%',))
-    #Send the data recieved
-    print(cursor.fetchall())
+    #Getting all the instructor + course pairs matching the query
+    cursor.execute("""SELECT professor.prof_id, professor.name, prof_sec.course_name, course.level
+                        FROM prof_sec 
+                        INNER JOIN professor ON prof_sec.prof_id=professor.prof_id 
+                        LEFT JOIN course ON course.course_name = prof_sec.course_name
+                        WHERE professor.name LIKE ? OR prof_sec.course_name LIKE ?;"""
+                    , (f'%{query}%', f'%{query}%',))
+    # comb_list = [{'prof_id': item[0], 'prof_name': item[1], 'course_name': item[2], 'level': item[3], 'ratings': []} for item in cursor.fetchall()]
 
-    # combo_list = [{'prof_id': item[0], 'prof_name': item[5], 'course_name': item[1]} for item in cursor.fetchall()]
+    comb_list = []
+    #for each pair - get the ratings if any 
+    for row in cursor.fetchall():
+        #getting the ratings
+        cursor.execute("""SELECT rating.workload, rating.learning, rating.grading
+                            FROM review
+                            INNER JOIN rating ON review.review_id = rating.review_id
+                            WHERE review.prof_id = ? AND course_name = ?""", (row[0], row[2]))
+        ratings = np.array(cursor.fetchall())
+        cum_ratings = np.mean(ratings, axis = 0, dtype = np.float64)
+        comb_list.append({'prof_id': row[0], 'prof_name': row[1], 'course_name': row[2], 'level': row[3], 'ratings': cum_ratings})
     
-
-
+    #Send the data recieved    
     context = {
-        'status': query,
+        'status': len(comb_list),
+        'combined_list': comb_list
     }
 
     return render(request, 'search/search_combo.html', context)

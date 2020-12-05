@@ -20,29 +20,29 @@
 
   <!-- Printing the status -->
   {% if status == "No query" %} <h4> No Search Results yet </h4> 
-  {% elif status == "Not found" %} <h4> This course does not exist. Please enter another course name. </h4> 
+  {% elif status == 0 %} <h4> This course does not exist. Please enter another course name. </h4> 
   {% else %} <h4> {{ status }} result(s) found </h4>  {% endif %}
 
   <hr/>
 
-  <!-- Printing the course list -->
-  <!-- <div class="row">
-    {% for course in course_list %}
+  <!-- Printing the combined list -->
+  <div class="row">
+    {% for item in combined_list %}
     <div class="col-sm-4">
       <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title">{{ course.course_name }}</h5>
+          <h5 class="card-title">{{ item.course_name }} taught by {{ item.prof_name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">
-            {{ course.level }}
+            {{ item.level }}
           </h6>
-          <p class="card-text"> ? </p>
-          <a href="{% url 'course-profile' course.course_name %}" class="card-link"> View course </a
+          <p class="card-text"> Ratings:<br>Workload - {{ item.ratings.0 }}<br>Learning - {{ item.ratings.1 }}<br>Grading - {{ item.ratings.2 }}</p>
+          <a href="{% url 'combo-profile' item.prof_id item.course_name %}" class="card-link"> View course </a
           >
         </div>
       </div>
     </div>
     {% endfor %}
-  </div> -->
+  </div>
 
   <!-- Back to home link -->
   <a href="{% url 'app-home' %}"> Back to Home page </a>
