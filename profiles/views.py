@@ -87,5 +87,40 @@ def course(request, course_name):
     return render(request, 'profiles/course.html', context)
 
 
-def combo(request):
-    return render(request, 'profiles/combo.html')
+def combo(request, prof_id, course_name):
+    # Fetching course from DB
+    conn = sqlite3.connect('./db.sqlite3')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM review NATURAL JOIN rating WHERE prof_id = ? AND course_name = ?;",
+                   (prof_id, course_name,))
+    rows = cursor.fetchall()
+    # If no reviews found
+    if rows is None:
+        return HttpResponseBadRequest('No course found!')
+
+    reviews = [{'review_id': r[0], 'user_id':r[1], 'text':r[2], 'date':r[3], 'semester':r[6], 'year':r[7],
+                'workload':r[8], 'learning':r[9], 'grading':r[10]} for r in rows]
+
+    cursor.execute("SELECT name FROM professor WHERE prof_id = ?;", (prof_id))
+    prof_name = cursor.fetchone()[0]
+
+    # Calculating averages
+    avgs = {}
+    if reviews:
+        avgs = {
+            'workload': round(sum(r['workload'] for r in reviews) / len(reviews),1),
+            'learning': round(sum(r['learning'] for r in reviews) / len(reviews),1),
+            'grading': round(sum(r['grading'] for r in reviews) / len(reviews),1)
+        }
+        avgs['overall'] = round(sum(avg for avg in avgs.values()) / len(avgs),1)
+
+    context = {
+        'reviews': reviews,
+        'num_reviews': len(reviews),
+        'prof_name': prof_name,
+        'prof_id': prof_id,
+        'course_name': course_name,
+        'avgs': avgs
+    }
+
+    return render(request, 'profiles/combo.html', context)

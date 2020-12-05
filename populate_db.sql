@@ -65,3 +65,8 @@ INSERT INTO offers (course_code, course_name, dept_name) VALUES ('CS100', 'Intro
 INSERT INTO offers (course_code, course_name, dept_name) VALUES ('CS105', 'Intro. to Programming', 'Computer Science');
 INSERT INTO offers (course_code, course_name, dept_name) VALUES ('MATH230', 'Probability', 'Mathematics');
 
+-- Adding reviews
+-- INSERT INTO review VALUES (1,1,'Test review.','2020-12-3',1,'Intro. to Computer Science','Fall',2019);
+
+-- Adding ratings
+-- INSERT INTO rating VALUES (1,4,5,3);
