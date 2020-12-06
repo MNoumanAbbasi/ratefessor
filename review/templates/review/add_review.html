@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 {% include "navbar.html" %}
 
-<!-- {% if not user.is_authenticated %} -->
+
 <main class="d-flex align-items-center min-vh-100 py-3 py-md-0 change-font change-bg">
   <div class="container grad top-header p-5">
     <h3>Add review for course: {{ course_name }}</h3>
@@ -9,7 +9,8 @@
     <hr />
     <form action="" method="POST">
       {% csrf_token %}
-      <div class="form-group w-25">
+      {{ form.as_p }}
+      <!-- <div class="form-group w-25">
         <label for="workload">Workload</label>
         <input type="range" class="custom-range" min="1" max="5" id="workload" required>
         <span class="pl-1">1 <span class="pl-5"> 2 <span class="pl-5"> 3 <span class="pl-5"> 4 <span class="pl-5"> 5
@@ -27,12 +28,11 @@
       <div class="form-group">
         <label for="review">Review</label>
         <textarea class="form-control" id="review" rows="3" required></textarea>
-      </div>
+      </div> -->
       <hr />
       <input type="submit" class="btn dark-button" type="button" value="Submit">
     </form>
   </div>
 </main>
-<!-- {% endif %} -->
 
 {% endblock content %}

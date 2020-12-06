@@ -9,18 +9,22 @@
         <h4>Course: {{ course.course_name }}</h4>
         <h4>Level: {{ course.level }}</h4>
 
-        <div class="d-flex row py-2 px-2 bg-light">
+        <div class="d-flex row px-2 bg-light rounded mt-3 p-3">
           <div class="green-tab p-2 px-3 mx-2">
             <p class="sm-text mb-0">OVERALL RATING</p>
-            <h4>4.8</h4>
-          </div>
-          <div class="white-tab p-2 mx-2 text-muted">
-            <p class="sm-text mb-0">ALL REVIEWS</p>
-            <h4>124</h4>
+            <h4>{{ avgs.overall }}</h4>
           </div>
           <div class="white-tab p-2 mx-2">
-            <p class="sm-text mb-0 text-muted">POSITIVE REVIEWS</p>
-            <h4 class="green-text">93%</h4>
+            <p class="sm-text mb-0 text-muted">WORKLOAD</p>
+            <h4 class="green-text">{{ avgs.workload }}</h4>
+          </div>
+          <div class="white-tab p-2 mx-2">
+            <p class="sm-text mb-0 text-muted">LEARNING</p>
+            <h4 class="green-text">{{ avgs.learning }}</h4>
+          </div>
+          <div class="white-tab p-2 mx-2">
+            <p class="sm-text mb-0 text-muted">GRADING</p>
+            <h4 class="green-text">{{ avgs.grading }}</h4>
           </div>
           <div class="ml-md-auto p-2 mx-md-2 pt-4 pt-md-3"></div>
         </div>
