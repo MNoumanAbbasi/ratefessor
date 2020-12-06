@@ -79,9 +79,19 @@ def course(request, course_name):
         if r:
             professors.append({'id': r[0], 'name': r[1], 'position': r[2], 'dept_name': r[3]})
 
+    # Also fetching reviews for this course
+    cursor.execute("SELECT AVG(workload), AVG(learning), AVG(grading) FROM review NATURAL JOIN rating WHERE course_name = ?;",
+                   (course_name,))
+    r = cursor.fetchone()
+    avgs = {}
+    if r:
+        avgs = {'workload':round(r[0],1), 'learning':round(r[1],1), 'grading':round(r[2],1)}
+        avgs['overall'] = round(sum(avg for avg in avgs.values()) / len(avgs), 1)
+
     context = {
         'professors': professors,
-        'course': course
+        'course': course,
+        'avgs': avgs
     }
 
     return render(request, 'profiles/course.html', context)
@@ -94,9 +104,6 @@ def combo(request, prof_id, course_name):
     cursor.execute("SELECT * FROM review NATURAL JOIN rating WHERE prof_id = ? AND course_name = ?;",
                    (prof_id, course_name,))
     rows = cursor.fetchall()
-    # If no reviews found
-    if rows is None:
-        return HttpResponseBadRequest('No course found!')
 
     reviews = [{'review_id': r[0], 'user_id':r[1], 'text':r[2], 'date':r[3], 'semester':r[6], 'year':r[7],
                 'workload':r[8], 'learning':r[9], 'grading':r[10]} for r in rows]
@@ -108,11 +115,11 @@ def combo(request, prof_id, course_name):
     avgs = {}
     if reviews:
         avgs = {
-            'workload': round(sum(r['workload'] for r in reviews) / len(reviews),1),
-            'learning': round(sum(r['learning'] for r in reviews) / len(reviews),1),
-            'grading': round(sum(r['grading'] for r in reviews) / len(reviews),1)
+            'workload': round(sum(r['workload'] for r in reviews) / len(reviews), 1),
+            'learning': round(sum(r['learning'] for r in reviews) / len(reviews), 1),
+            'grading': round(sum(r['grading'] for r in reviews) / len(reviews), 1)
         }
-        avgs['overall'] = round(sum(avg for avg in avgs.values()) / len(avgs),1)
+        avgs['overall'] = round(sum(avg for avg in avgs.values()) / len(avgs), 1)
 
     context = {
         'reviews': reviews,

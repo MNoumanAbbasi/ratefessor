@@ -21,9 +21,7 @@ def addReview(request, prof_id, course_name):
             grading = form.cleaned_data['grading']
             review = form.cleaned_data['review']
 
-            # TODO: Need user id here to store data into SQL
-            user_id = 1
-            # user_id = request.user.id
+            user_id = request.user.id
             date = datetime.today().strftime('%Y-%m-%d')
             
             cursor.execute("INSERT INTO review (user_id,text,date,prof_id,course_name,semester,year) VALUES (?,?,?,?,?,?,?)",
