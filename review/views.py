@@ -1,9 +1,9 @@
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
-from django import forms
 from .forms import AddReviewForm
 import sqlite3
 from datetime import datetime
+from profiles.db_helpers import get_prof_details
 
 
 def addReview(request, prof_id, course_name):
@@ -22,7 +22,7 @@ def addReview(request, prof_id, course_name):
             review = form.cleaned_data['review']
 
             user_id = request.user.id
-            date = datetime.today().strftime('%Y-%m-%d')
+            date = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
             
             cursor.execute("INSERT INTO review (user_id,text,date,prof_id,course_name,semester,year) VALUES (?,?,?,?,?,?,?)",
                            (user_id, review, date, prof_id, course_name, semester, year))
@@ -34,8 +34,7 @@ def addReview(request, prof_id, course_name):
     else:
         form = AddReviewForm()
 
-    cursor.execute("SELECT name FROM professor WHERE prof_id = ?;", (prof_id,))
-    prof_name = cursor.fetchone()[0]
+    prof_name = get_prof_details(prof_id)[1]
 
     context = {'course_name': course_name, 'prof_name': prof_name, 'form': form}
     return render(request, 'review/add_review.html', context)
