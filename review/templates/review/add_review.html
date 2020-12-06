@@ -9,7 +9,7 @@
     <hr />
     <form action="" method="POST">
       {% csrf_token %}
-      {{ form }}
+      {{ form.as_p }}
       <!-- <div class="form-group w-25">
         <label for="workload">Workload</label>
         <input type="range" class="custom-range" min="1" max="5" id="workload" required>
