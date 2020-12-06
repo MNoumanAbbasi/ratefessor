@@ -99,27 +99,34 @@ def search_course(request):
 
     return render(request, 'search/search_course.html', context)
 
+def filter(request):
+    #Send the data recieved    
+    context = {
+        'status': 0
+    }
+
+    return render(request, 'search/search_combo.html', context)
+
 def search_combo(request):
-    status = ""
-    
-    # Getting search results
+    # Getting search results from homepage
     query = request.GET.get('search_query')
-    # query = query
     # TODO: Remove afterwards. Printed for testing
     print(query)
 
-    #Simply load the page in the case of first visit
+    #Getting search results from the search_combo page
+    if query is None:
+        query = request.GET.get('comb_query')
+        # TODO: Remove afterwards. Printed for testing
+        print("From comb: ", query)
+
+    #Display zero results in the case of an empty query
     if query is None: 
         context = {
             'status': "No query",
         }
         return render(request, 'search/search_combo.html', context)
 
-    # TODO: Remove afterwards. Printed for testing
-    print(status)
-
     #Query DB according to filters results and the comb_query
-    #SELECT * FROM prof_sec INNER JOIN professor ON prof_sec.prof_id=professor.prof_id WHERE professor.name = 'Algebra' OR prof_sec.course_name LIKE 'Algebra'
     conn = sqlite3.connect('./db.sqlite3')
     cursor = conn.cursor()
     #Getting all the instructor + course pairs matching the query
@@ -129,7 +136,6 @@ def search_combo(request):
                         LEFT JOIN course ON course.course_name = prof_sec.course_name
                         WHERE professor.name LIKE ? OR prof_sec.course_name LIKE ?;"""
                     , (f'%{query}%', f'%{query}%',))
-    # comb_list = [{'prof_id': item[0], 'prof_name': item[1], 'course_name': item[2], 'level': item[3], 'ratings': []} for item in cursor.fetchall()]
 
     comb_list = []
     #for each pair - get the ratings if any 
@@ -141,7 +147,7 @@ def search_combo(request):
                             WHERE review.prof_id = ? AND course_name = ?""", (row[0], row[2]))
         ratings = np.array(cursor.fetchall())
         cum_ratings = np.mean(ratings, axis = 0, dtype = np.float64)
-        comb_list.append({'prof_id': row[0], 'prof_name': row[1], 'course_name': row[2], 'level': row[3], 'ratings': cum_ratings})
+        comb_list.append({'prof_id': row[0], 'prof_name': row[1], 'course_name': row[2], 'level': row[3], 'ratings': np.round(cum_ratings, 2)})
     
     #Send the data recieved    
     context = {
