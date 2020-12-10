@@ -8,7 +8,7 @@
 
   <!-- Printing the status -->
   {% if status == "No query" %} <h4> No Search Results yet </h4> 
-  {% elif status == "Not found" %} <h4> This professor does not exist. Please enter another professor name. </h4> 
+  {% elif status == 0 %} <h4> This professor does not exist. Please enter another professor name. </h4> 
   {% else %} <h4> {{ status }} result(s) found </h4>  {% endif %}
 
   <hr/>
