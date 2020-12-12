@@ -1,0 +1,35 @@
+{% block review_card %} {% load static %}
+
+<div class="col-sm-12">
+  <div class="card mb-3">
+    <div class="card-body p-2 pl-3">
+      {% if user.id == review.user_id %}
+      <a href="{% url 'add-review' prof_id course_name %}">
+        <i class="fas fa-edit fa-2x float-right mt-1 mr-n2"></i>
+      </a>
+      <a href="{% url 'delete-review' review.review_id prof_id course_name %}">
+        <i class="fas fa-trash fa-2x float-right mt-5 mr-n4 text-danger"></i>
+      </a>
+      {% endif %}
+      <!-- <div class=""></div> -->
+      <div class="card-text float-right bg-light ml-4 mr-3 p-2 rounded">
+        <p class="mb-1"><i class="fa fa-star text-warning"></i>
+          <span class="sm-text mb-0 text-muted">WORKLOAD:</span> {{ review.workload }}
+        </p>
+        <p class="mb-1"><i class="fa fa-star text-warning"></i>
+          <span class="sm-text mb-0 text-muted">LEARNING:</span> {{ review.learning }}
+        </p>
+        <p class="mb-1"><i class="fa fa-star text-warning"></i>
+          <span class="sm-text mb-0 text-muted">GRADING:</span> {{ review.grading }}
+        </p>
+      </div>
+      <h5 class="card-title">{{ review.course_name }}</h5>
+      <p class="card-text">{{ review.text }}</p>
+      <hr />
+      <small class="text-muted">{{ review.semester }}, {{ review.year }}</small>
+      <small class="text-muted float-right">{{ review.date }} | <i>User: {{ review.user_id }}</i></small>
+    </div>
+  </div>
+</div>
+
+{% endblock review_card %}
