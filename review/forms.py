@@ -9,5 +9,5 @@ class AddReviewForm(forms.Form):
     workload = forms.IntegerField(label="Workload (1-5)", widget=range_widget)
     learning = forms.IntegerField(label="Learning (1-5)", widget=range_widget)
     grading = forms.IntegerField(label="Grading (1-5)", widget=range_widget)
-    review = forms.CharField(label="Review", max_length=150, widget=forms.Textarea(
+    text = forms.CharField(label="Review", max_length=150, widget=forms.Textarea(
         attrs={'class': 'form-control', 'rows': '3'}))

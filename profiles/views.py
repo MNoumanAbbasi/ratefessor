@@ -83,8 +83,15 @@ def combo(request, prof_id, course_name):
     reviews, avgs = get_reviews_ratings(prof_id, course_name)
     prof_name = get_prof_details(prof_id)[1]
 
+    # Storing the user review separately to view it under separate heading
+    user_review = None
+    for r in reviews:
+        if r["user_id"] == request.user.id:
+            user_review = r
+
     context = {
         'reviews': reviews,
+        'user_review': user_review,
         'num_reviews': len(reviews),
         'prof_name': prof_name,
         'prof_id': prof_id,

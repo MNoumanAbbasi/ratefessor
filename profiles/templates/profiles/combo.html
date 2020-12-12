@@ -44,39 +44,40 @@
 
   <!-- Reviews block -->
   <hr />
-  {% if user.is_authenticated %}
-    <a href="{% url 'add-review' prof_id course_name %}" class="btn dark-button float-right">Add Review</a>
-  {% else %}
-    <a href="{% url 'accounts:signin' %}" class="btn dark-button float-right">Add Review</a>
-  {% endif %}
-  <h3 class="text-center roboto-font">Reviews</h3>
+  <h2 class="text-center roboto-font font-weight-bold">Reviews</h2>
+  <hr />
+  <h4 class="text-center roboto-font">Your reviews</h4>
   <hr />
 
   <div class="row">
     {% for review in reviews %}
-    <div class="col-sm-12">
-      <div class="card mb-3">
-        <div class="card-body p-2 pl-3">
-          <!-- <div class=""></div> -->
-          <div class="card-text float-right bg-light ml-4 p-2 rounded">
-            <p class="mb-1"><i class="fa fa-star text-warning"></i>
-              <span class="sm-text mb-0 text-muted">WORKLOAD:</span> {{ review.workload }}
-            </p>
-            <p class="mb-1"><i class="fa fa-star text-warning"></i>
-              <span class="sm-text mb-0 text-muted">LEARNING:</span> {{ review.learning }}
-            </p>
-            <p class="mb-1"><i class="fa fa-star text-warning"></i>
-              <span class="sm-text mb-0 text-muted">GRADING:</span> {{ review.grading }}
-            </p>
-          </div>
-          <h5 class="card-title">{{ review.course_name }}</h5>
-          <p class="card-text">{{ review.text }}</p>
-          <hr />
-          <small class="text-muted">{{ review.semester }}, {{ review.year }}</small>
-          <small class="text-muted float-right">{{ review.date }} | <i>User: {{ review.user_id }}</i></small>
-        </div>
-      </div>
-    </div>
+    {% if user.id == review.user_id %}
+    {% include "profiles/review_card.html" %}
+    {% endif %}
+    {% endfor %}
+  </div>
+
+
+  {% if user_review == None %}
+  <div class="text-center">
+    <p>No review added.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'add-review' prof_id course_name %}" class="btn dark-button">Add Review</a>
+    {% else %}
+    <a href="{% url 'accounts:signin' %}" class="btn dark-button">Add Review</a>
+    {% endif %}
+  </div>
+  {% endif%}
+
+
+  <hr />
+  <h4 class="text-center roboto-font">Other reviews</h4>
+  <hr />
+  <div class="row">
+    {% for review in reviews %}
+    {% if user.id != review.user_id %}
+    {% include "profiles/review_card.html" %}
+    {% endif %}
     {% endfor %}
   </div>
 </div>
