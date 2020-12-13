@@ -21,7 +21,7 @@ urlpatterns = [
     path('', include('home.urls')),
     re_path(r'^search/', include('search.urls')),
     re_path(r'^accounts/', include('accounts.urls')),
-
+    re_path(r'^adminPortals/', include('adminPortals.urls')),
     path('profile/', include('profiles.urls')),
     path('addReview/', include('review.urls'))
 ]
