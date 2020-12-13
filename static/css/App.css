@@ -287,6 +287,27 @@ input:checked + .slider:before {
   color: gray;
 }
 
+.top-margin {
+  margin-top: 7rem !important;
+}
+
+.top-header2 {
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 7rem;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 1.1em;
+  width: 1.1em;
+  border-radius: 50%;
+  background: white;
+  margin-top: -4px;
+}
+
 .top-header {
   line-height: 0.7;
   font-family: 'Roboto', sans-serif;
