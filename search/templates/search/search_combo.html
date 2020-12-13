@@ -1,69 +1,80 @@
 {% extends "base.html" %} {% block content %} {% load static %}
+{% include "navbar.html" %}
 
   <!-- filter form -->
-  <form action = "{% url 'filter-combo' %}" method = "post">
+  <div class="container">
+    
+     
+  <form action = "{% url 'filter-combo' %}" class="top-header2" method = "post">
+    <div class="d-flex justify-content-between">
+ 
     {% csrf_token %}
-    <div class = "container">
-      <div class="col-md-8 mb-3">
-        <label> Professor/Course </label>
-        <input name = "prof_course_filter" type="text" class="form-control" value = None>
+    
+    <div class = "container mt-2 mb-2">
+      <div class=" mb-3">
+        <label class="font-weight-bold"> Professor/Course </label>
+        <input name = "prof_course_filter" type="text" class="form-control" placeholder = "Search">
         <small class="form-text text-muted">
           Enter a professor/course name to guide filter results. 
         </small>
       </div>
 
-      <div class="col-md-8 mb-3">
-        <label> Course Level </label>
+      <div class="mb-3">
+        <label class="font-weight-bold"> Course Level </label>
         <select name = "level_filter" class="custom-select" value="None">
-          <option selected disabled value=""> Choose... </option>
-          <option value="UG" > UG </option>
-          <option value="G" > G </option>
-          <option value="UG/G"> UG/G </option>
+          <option selected disabled value=""> Choose course level </option>
+          <option value="UG" > Udergraduate </option>
+          <option value="G" > Graduate </option>
+          <option value="UG/G"> Udergraduate/Graduate </option>
         </select>
       </div>
+      <button class="btn dark-button mt-2" type="submit"> Search </button>
+    </div>
 
-      <div class="col-md-8 mb-3">
-        <label> Select appropriate ranges </label>
+      <div class="container mt-2 mb-2">
+        <label class="font-weight-bold"> Select appropriate ranges </label>
         <small class="form-text text-muted">
           If you don't want results to be filtered according to any range, please ensure all are zero. If you want to query by only one metric, simply select 0-5 for the other metrics. 
         </small>
         <div class="mt-1"> </div>
-        <label> Worload: </label>
+        <label class="mb-0"> Worload: </label>
         <div class="row">
-          <span class="font-weight-bold purple-text mr-2 mt-1"> Start: 0 </span>
-          <input name = "work_start" class="border-0" type="range" min="0" max="5" step="0.5" value="0" />
-          <span class="font-weight-bold purple-text ml-2 mt-1"> 5 </span>
+          <span class="mr-2 ml-5"> Start: 0 </span>
+          <input name = "work_start" class="border-0 w-25 range-height" type="range" min="0" max="5" step="0.5" value="0" />
+          <span class=" purple-text ml-2 mt-1"> 5 </span>
           <div class="mr-4"> </div>
-          <span class="font-weight-bold purple-text mr-2 mt-1"> End: 0 </span>
-          <input name = "work_end" class="border-0" type="range" min="0" max="5" step="0.5" value="0" />
-          <span class="font-weight-bold purple-text ml-2 mt-1"> 5 </span>
+          <span class=" purple-text mr-2 mt-1 "> End: 0 </span>
+          <input name = "work_end" class="border-0 w-25" type="range" min="0" max="5" step="0.5" value="0" />
+          <span class="purple-text ml-2 mt-1"> 5 </span>
         </div>
-        <div class="mt-1"> </div>
-        <label> Grading: </label>
+       
+        <label class="mb-0"> Grading: </label>
         <div class="row">
-          <span class="font-weight-bold purple-text mr-2 mt-1"> Start: 0 </span>
-          <input name = "grad_start" class="border-0" type="range" min="0" max="5" step="0.5" value="0" />
-          <span class="font-weight-bold purple-text ml-2 mt-1"> 5 </span>
+          <span class="purple-text mr-2  ml-5"> Start: 0 </span>
+          <input name = "grad_start" class="border-0 w-25" type="range" min="0" max="5" step="0.5" value="0" />
+          <span class="purple-text ml-2 mt-1"> 5 </span>
           <div class="mr-4"> </div>
-          <span class="font-weight-bold purple-text mr-2 mt-1"> End: 0 </span>
-          <input name = "grad_end" class="border-0" type="range" min="0" max="5" step="0.5" value="0" />
-          <span class="font-weight-bold purple-text ml-2 mt-1"> 5 </span>
+          <span class="purple-text mr-2 mt-1"> End: 0 </span>
+          <input name = "grad_end" class="border-0 w-25" type="range" min="0" max="5" step="0.5" value="0" />
+          <span class="purple-text ml-2 mt-1"> 5 </span>
         </div>
-        <div class="mt-1"> </div>
-        <label> Learning: </label>
+     
+        <label class="mb-0"> Learning: </label>
         <div class="row">
-          <span class="font-weight-bold purple-text mr-2 mt-1"> Start: 0 </span>
-          <input name = "learn_start" class="border-0" type="range" min="0" max="5" step="0.5" value="0" />
-          <span class="font-weight-bold purple-text ml-2 mt-1"> 5 </span>
+          <span class="purple-text mr-2  ml-5"> Start: 0 </span>
+          <input name = "learn_start" class="border-0 w-25" type="range" min="0" max="5" step="0.5" value="0" />
+          <span class="purple-text ml-2 mt-1"> 5 </span>
           <div class="mr-4"> </div>
-          <span class="font-weight-bold purple-text mr-2 mt-1"> End: 0 </span>
-          <input name = "learn_end" class="border-0" type="range" min="0" max="5" step="0.5" value="0" />
-          <span class="font-weight-bold purple-text ml-2 mt-1"> 5 </span>
+          <span class="purple-text mr-2 mt-1"> End: 0 </span>
+          <input name = "learn_end" class="border-0 w-25" type="range" min="0" max="5" step="0.5" value="0" />
+          <span class="purple-text ml-2 mt-1"> 5 </span>
         </div>
       </div>
 
-      <button class="btn dark-button" type="submit"> Search </button>
-    </div>
+      
+  
+  </div>
+  
   </form>
   <br>
 
@@ -99,5 +110,5 @@
 
   <!-- Back to home link -->
   <a href="{% url 'app-home' %}"> Back to Home page </a>
-
+</div>
 {% endblock content %}
