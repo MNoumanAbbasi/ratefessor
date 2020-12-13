@@ -64,7 +64,15 @@ def get_reviews_ratings(prof_id=None, course_name=None):
 
     reviews = [{'review_id': r[0], 'user_id':r[1], 'text':r[2], 'date':r[3], 'semester':r[6], 'year':r[7],
                 'workload':r[8], 'learning':r[9], 'grading':r[10]} for r in rows]
+    
+    # Fetching votes for each review
+    cursor.execute("SELECT review_id, SUM(vote) FROM votes GROUP BY review_id;")
+    for r in cursor.fetchall():
+        for review in reviews:
+            if review['review_id'] == r[0]:
+                review['votes'] = r[1]
 
+    # Calculating average rating values
     avgs = {}
     if reviews:
         avgs = {
@@ -73,5 +81,6 @@ def get_reviews_ratings(prof_id=None, course_name=None):
             'grading': round(sum(r['grading'] for r in reviews) / len(reviews), 1)
         }
         avgs['overall'] = round(sum(avg for avg in avgs.values()) / len(avgs), 1)
+
 
     return reviews, avgs
