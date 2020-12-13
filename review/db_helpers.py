@@ -73,3 +73,18 @@ def delete_review(review_id, user_id):
         cursor.execute("DELETE FROM review WHERE review_id = ? AND user_id = ?;", (review_id, user_id))
         conn.commit()
         cursor.close()
+
+
+def vote_review(review_id, user_id, vote):
+    """
+    Upvotes or downvotes a given review. If already voted, update vote.
+    """
+    if user_id is None:
+        return
+    with sqlite3.connect('./db.sqlite3') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM votes WHERE review_id = ? AND user_id = ?;", (review_id, user_id))
+        if cursor.fetchone():
+            cursor.execute("UPDATE votes SET vote = ? WHERE review_id = ? AND user_id = ?;", (vote, review_id, user_id))
+        else:
+            cursor.execute("INSERT INTO votes VALUES (?,?,?);", (review_id, user_id, vote))
