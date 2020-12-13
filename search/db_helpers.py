@@ -117,7 +117,7 @@ def filter_acc_level_ratings(level, rating_list):
                                                                                 INNER JOIN rating ON review.review_id = rating.review_id
                                                                                 GROUP BY prof_id
                                                                                 HAVING (AVG(workload) BETWEEN ? AND ?) AND (AVG(learning) BETWEEN ? AND ?) AND (AVG(grading) BETWEEN ? AND ?));"""
-    , (level, (float(rating_list[0]), float(rating_list[1]), float(rating_list[2]), float(rating_list[3]), float(rating_list[4]), float(rating_list[5]),)))
+    , (level, float(rating_list[0]), float(rating_list[1]), float(rating_list[2]), float(rating_list[3]), float(rating_list[4]), float(rating_list[5]),))
     return cursor.fetchall()
 
 def filter_acc_prof_course_ratings(identifier, rating_list):
@@ -135,7 +135,7 @@ def filter_acc_prof_course_ratings(identifier, rating_list):
                                                                                 INNER JOIN rating ON review.review_id = rating.review_id
                                                                                 GROUP BY prof_id
                                                                                 HAVING (AVG(workload) BETWEEN ? AND ?) AND (AVG(learning) BETWEEN ? AND ?) AND (AVG(grading) BETWEEN ? AND ?));"""
-    , (f'%{identifier}%', f'%{identifier}%', (float(rating_list[0]), float(rating_list[1]), float(rating_list[2]), float(rating_list[3]), float(rating_list[4]), float(rating_list[5]),)))
+    , (f'%{identifier}%', f'%{identifier}%', float(rating_list[0]), float(rating_list[1]), float(rating_list[2]), float(rating_list[3]), float(rating_list[4]), float(rating_list[5]),))
     return cursor.fetchall()
 
 def filter_acc_prof_course_level(identifier, level):
@@ -167,5 +167,5 @@ def filter_acc_all(identifier, level, rating_list):
                                                                                 INNER JOIN rating ON review.review_id = rating.review_id
                                                                                 GROUP BY prof_id
                                                                                 HAVING (AVG(workload) BETWEEN ? AND ?) AND (AVG(learning) BETWEEN ? AND ?) AND (AVG(grading) BETWEEN ? AND ?));"""
-                    , (f'%{identifier}%', f'%{identifier}%', level, (float(rating_list[0]), float(rating_list[1]), float(rating_list[2]), float(rating_list[3]), float(rating_list[4]), float(rating_list[5]),)))
+                    , (f'%{identifier}%', f'%{identifier}%', level, float(rating_list[0]), float(rating_list[1]), float(rating_list[2]), float(rating_list[3]), float(rating_list[4]), float(rating_list[5]),))
     return cursor.fetchall()
