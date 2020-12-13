@@ -287,6 +287,20 @@ input:checked + .slider:before {
   color: gray;
 }
 
+.btn-secondary {
+  color: #7579e7;
+  background-color: #ffffff;
+  border-color: #7579e7;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-secondary.dropdown-toggle {
+  color: #fff;
+  background-color: #7579e7;
+  border-color: #7579e7;
+}
+
 .top-margin {
   margin-top: 7rem !important;
 }
