@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest
 import sqlite3
-import numpy as np
+from .db_helpers import *
 # Create your views here.
 
 def loading(request):
@@ -23,18 +23,15 @@ def loading(request):
         return HttpResponseBadRequest('Choose one option!')
 
 def search_professor(request):
-    status = ""
     professor_list = []
 
     # Getting search results
     query = request.GET.get('search_query')
-    # query = query
-
     # TODO: Remove afterwards. Printed for testing
     print(query)
 
     #Simply load the page in the case of first visit
-    if query is None: 
+    if query == "": 
         context = {
             'status': "No query",
             'professor_list': professor_list
@@ -42,41 +39,33 @@ def search_professor(request):
         return render(request, 'search/search_professor.html', context)
 
     #Fetching professor from DB acc to query
-    conn = sqlite3.connect('./db.sqlite3')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM professor WHERE name = ?;", (query,))
-    professor_list = [{'id': item[0], 'name': item[1], 'position': item[2], 'dept_name': item[3], 'qualification': item[4]} for item in cursor.fetchall()]
-    if professor_list == []: status = "Not found"
-    else: status = len(professor_list)
+    result = get_prof(query)
+    professor_list = [{'id': item[0], 'name': item[1], 'position': item[2], 'dept_name': item[3], 'qualification': item[4]} for item in result]
 
     # TODO: Remove afterwards. Hard coded for testing:
     hard_code = False
     if hard_code:
         professor_list.append({'id': 50, 'name': 'Nouman Abbasi', 'position': 'Department Chair', 'dept_name': 'Computer Science', 'qualification': "Bht kuch"})
         print(professor_list)
-        status = len(professor_list)
 
     #Sending off data
     context = {
-        'status': status,
+        'status': len(professor_list),
         'professor_list': professor_list
     }
 
     return render(request, 'search/search_professor.html', context)
 
 def search_course(request):
-    status = ""
     course_list = []
 
     # Getting search results
     query = request.GET.get('search_query')
-    # query = query
-
     # TODO: Remove afterwards. Printed for testing
     print(query)
 
     #Simply load the page in the case of first visit
-    if query is None: 
+    if query == "": 
         context = {
             'status': "No query",
             'course_list': course_list
@@ -84,30 +73,94 @@ def search_course(request):
         return render(request, 'search/search_course.html', context)
     
     #Fetching professor from course acc to query - checks for substring
-    conn = sqlite3.connect('./db.sqlite3')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM course WHERE course_name LIKE ?", (f'%{query}%',))
-    course_list = [{'course_name': item[0], 'level': item[1]} for item in cursor.fetchall()]
-    if course_list == []: status = "Not found"
-    else: status = len(course_list)
-    print(status)
+    result = get_course(query)
+    course_list = [{'course_name': item[0], 'level': item[1]} for item in result]
     
     context = {
-        'status': status,
+        'status': len(course_list),
         'course_list': course_list
     }
 
     return render(request, 'search/search_course.html', context)
 
 def filter(request):
-    #Send the data recieved    
+    #Get data 
+    prof_course_query = request.POST.get('prof_course_filter')
+    level_query = request.POST.get('level_filter')
+    workload_start = request.POST.get('work_start')
+    workload_end = request.POST.get('work_end')
+    grad_start = request.POST.get('grad_start')
+    grad_end = request.POST.get('grad_end')
+    learn_start = request.POST.get('learn_start')
+    learn_end = request.POST.get('learn_end')
+    rating = [float(workload_start), float(workload_end), float(learn_start), float(learn_end), float(grad_start), float(grad_end)]
+
+    # TODO: Remove afterwards. Printed for testing
+    print(prof_course_query)
+    print(level_query)
+    print(workload_start, workload_end)
+    print(grad_start, grad_end)
+    print(learn_start, learn_end)
+    
+    query_list = []
+    combo_list = []
+    no_query = False
+
+    if (prof_course_query == "None"):
+        if (level_query == None):
+            if (not (any(rating) > 0)):
+                #nothing
+                query_list = []
+                no_query = True
+            else:
+                #only range - return all course + instructor tuples matching those ratings 
+                query_list = filter_acc_ratings(rating)
+                print(query_list)
+        else:
+            if (workload_end == "0" and workload_start == "0"):
+                #only level
+                query_list = filter_acc_level(level_query)
+                print(query_list)
+            else: 
+                #only range and level
+                query_list = filter_acc_level_ratings(level_query, rating)
+                print(query_list)
+    else: #the branch where prof is not empty
+        if (level_query == None):
+            if (workload_start == "0" and workload_end == "0"):
+                #only text - simply return all course + instructor tuples matching that text
+                query_list = get_prof_course_comb(prof_course_query)
+                print(query_list)
+            else:
+                #only text and range
+                query_list = filter_acc_prof_course_ratings(prof_course_query, rating)
+                print(query_list)
+        else: #level is not empty
+            if (workload_start == "0" and workload_end == "0"):
+                #text and level
+                query_list = filter_acc_prof_course_level(prof_course_query, level_query)
+                print(query_list)
+            else:
+                #text, level and range 
+                query_list = filter_acc_all(prof_course_query, level_query, rating)
+                print(query_list)
+
+    combo_list = get_cards(query_list)
+
+    if no_query == True: status = "No query"
+    else: status = len(combo_list)
+
+    #Send the data recieved 
     context = {
-        'status': 0
+        'status': status,
+        'combined_list': combo_list
     }
 
     return render(request, 'search/search_combo.html', context)
 
 def search_combo(request):
+    combo_list = []
+
     # Getting search results from homepage
     query = request.GET.get('search_query')
     # TODO: Remove afterwards. Printed for testing
@@ -120,39 +173,19 @@ def search_combo(request):
         print("From comb: ", query)
 
     #Display zero results in the case of an empty query
-    if query is None: 
+    if query == None or query == "" or query == "\n": 
         context = {
             'status': "No query",
         }
         return render(request, 'search/search_combo.html', context)
-
-    #Query DB according to filters results and the comb_query
-    conn = sqlite3.connect('./db.sqlite3')
-    cursor = conn.cursor()
-    #Getting all the instructor + course pairs matching the query
-    cursor.execute("""SELECT professor.prof_id, professor.name, prof_sec.course_name, course.level
-                        FROM prof_sec 
-                        INNER JOIN professor ON prof_sec.prof_id=professor.prof_id 
-                        LEFT JOIN course ON course.course_name = prof_sec.course_name
-                        WHERE professor.name LIKE ? OR prof_sec.course_name LIKE ?;"""
-                    , (f'%{query}%', f'%{query}%',))
-
-    comb_list = []
-    #for each pair - get the ratings if any 
-    for row in cursor.fetchall():
-        #getting the ratings
-        cursor.execute("""SELECT rating.workload, rating.learning, rating.grading
-                            FROM review
-                            INNER JOIN rating ON review.review_id = rating.review_id
-                            WHERE review.prof_id = ? AND course_name = ?""", (row[0], row[2]))
-        ratings = np.array(cursor.fetchall())
-        cum_ratings = np.mean(ratings, axis = 0, dtype = np.float64)
-        comb_list.append({'prof_id': row[0], 'prof_name': row[1], 'course_name': row[2], 'level': row[3], 'ratings': np.round(cum_ratings, 2)})
+    
+    result_comb = get_prof_course_comb(query)
+    combo_list = get_cards(result_comb)
     
     #Send the data recieved    
     context = {
-        'status': len(comb_list),
-        'combined_list': comb_list
+        'status': len(combo_list),
+        'combined_list': combo_list
     }
 
     return render(request, 'search/search_combo.html', context)
