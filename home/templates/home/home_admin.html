@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+{% include "navbar.html" %}
+
+<div class="bg d-md-block d-none"></div>
+
+<div class="row centered mt-4">
+    <div class="col">
+      <div class="card">
+        <form action="{% url 'executor' %}" method="get">
+            <div class="card-body">
+                <h5 class="card-title roboto-font text-center">
+                    Execute Queries
+                </h5>
+
+                <div class="container">
+                <div class="row no-gutters mt-3 align-items-center">
+                    <div class="col">
+                        <input
+                        name="execute_query"
+                        class="form-control border-secondary rounded-pill pr-5"
+                        type="query"
+                        placeholder="Execute"
+                        id="example-search-input2"
+                        />
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn light-button-home ml-n5" type="submit">
+                        <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock content %}
