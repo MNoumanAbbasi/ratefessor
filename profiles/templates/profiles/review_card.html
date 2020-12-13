@@ -2,7 +2,37 @@
 
 <div class="col-sm-12">
   <div class="card mb-3">
-    <div class="card-body p-2 pl-3">
+    <div class="card-body p-2">
+      <div class="d-flex flex-column float-left bg-light mt-3 mr-2 p-2">
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'vote-review' review.review_id 1 prof_id course_name %}">
+          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+        </a>
+        {% if review.votes %}
+        <small class="text-center">{{ review.votes }}</small>
+        {% else %}
+        <small class="text-center">0</small>
+        {% endif %}
+        <a href="{% url 'vote-review' review.review_id -1 prof_id course_name %}">
+          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </a>
+
+        {% else %}
+        <a href="{% url 'accounts:signin' %}">
+          <i class="fa fa-arrow-up" aria-hidden="true"></i>
+        </a>
+        {% if review.votes %}
+        <small class="text-center">{{ review.votes }}</small>
+        {% else %}
+        <small class="text-center">0</small>
+        {% endif %}
+        <a href="{% url 'accounts:signin' %}">
+          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+      </div>
       {% if user.id == review.user_id %}
       <a href="{% url 'add-review' prof_id course_name %}">
         <i class="fas fa-edit fa-2x float-right mt-1 mr-n2"></i>

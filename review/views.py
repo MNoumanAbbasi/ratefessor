@@ -1,7 +1,8 @@
-from django.shortcuts import redirect, render, resolve_url
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import redirect, render
 from .forms import AddReviewForm
 from profiles.db_helpers import get_prof_details
-from review.db_helpers import add_review, delete_review, get_user_review
+from review.db_helpers import add_review, delete_review, get_user_review, vote_review
 
 
 def addReview(request, prof_id, course_name):
@@ -16,7 +17,7 @@ def addReview(request, prof_id, course_name):
         # Get prefilled form data if user review already exists in DB
         if request.user.is_authenticated:
             user_review = get_user_review(request.user.id, prof_id, course_name)
-            
+
         if user_review:
             form = AddReviewForm(user_review)
         else:
@@ -35,4 +36,10 @@ def addReview(request, prof_id, course_name):
 
 def deleteReview(request, review_id, prof_id, course_name):
     delete_review(review_id, request.user.id)
+    return redirect("combo-profile", prof_id, course_name)
+
+
+def voteReview(request, review_id, vote, prof_id, course_name):
+    vote_review(review_id, request.user.id, vote)
+    # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     return redirect("combo-profile", prof_id, course_name)
