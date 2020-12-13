@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest
 import sqlite3
-import numpy as np
 from .db_helpers import *
 # Create your views here.
 
@@ -32,7 +31,7 @@ def search_professor(request):
     print(query)
 
     #Simply load the page in the case of first visit
-    if query is None: 
+    if query == "": 
         context = {
             'status': "No query",
             'professor_list': professor_list
@@ -66,7 +65,7 @@ def search_course(request):
     print(query)
 
     #Simply load the page in the case of first visit
-    if query is None: 
+    if query == "": 
         context = {
             'status': "No query",
             'course_list': course_list
@@ -85,82 +84,82 @@ def search_course(request):
     return render(request, 'search/search_course.html', context)
 
 def filter(request):
-    #ONLY because stupid errors and maine engraizi likhni hai huh
-    prof = ""
-    empty = ""
-    level = ""
     #Get data 
-    prof_course_query = request.GET.get('prof_course_filter')
-    level_query = request.GET.get('level_filter')
-    range_query = request.GET.get('range_filter')
+    prof_course_query = request.POST.get('prof_course_filter')
+    level_query = request.POST.get('level_filter')
+    workload_start = request.POST.get('work_start')
+    workload_end = request.POST.get('work_end')
+    grad_start = request.POST.get('grad_start')
+    grad_end = request.POST.get('grad_end')
+    learn_start = request.POST.get('learn_start')
+    learn_end = request.POST.get('learn_end')
+    rating = [float(workload_start), float(workload_end), float(learn_start), float(learn_end), float(grad_start), float(grad_end)]
+
     # TODO: Remove afterwards. Printed for testing
     print(prof_course_query)
     print(level_query)
-    print(range_query)
+    print(workload_start, workload_end)
+    print(grad_start, grad_end)
+    print(learn_start, learn_end)
+    
+    query_list = []
+    combo_list = []
+    no_query = False
 
-    #Could also filter by department
-
-    if (prof is empty):
-        if (level is empty):
-            if (range is empty):
-                #all three are empty and ratings are 0 - give them no results yet page
-                context = {
-                    'status': 0
-                }
-
-                return render(request, 'search/search_combo.html', context)
+    if (prof_course_query == "None"):
+        if (level_query == None):
+            if (not (any(rating) > 0)):
+                #nothing
+                query_list = []
+                no_query = True
             else:
-                return None
                 #only range - return all course + instructor tuples matching those ratings 
-                # SELECT professor.prof_id, professor.name, prof_sec.course_name, course.level
-                #     FROM prof_sec 
-                #     INNER JOIN professor ON prof_sec.prof_id=professor.prof_id 
-                #     LEFT JOIN course ON course.course_name = prof_sec.course_name
-                #     WHERE (professor.prof_id, prof_sec.course_name) IN (SELECT prof_id, course_name 
-                #                                                             FROM reviews WHERE review_id = (SELECT review_id FROM ratings WHERE ...));
-        else: #level is not empty
-            if (range is empty):
-                return None
-                #only level - return all course + instructor tuples matching that level
-                #same query as get_prof_course_comb but with a WHERE level filter
-            else:
-                return None
+                query_list = filter_acc_ratings(rating)
+                print(query_list)
+        else:
+            if (workload_end == "0" and workload_start == "0"):
+                #only level
+                query_list = filter_acc_level(level_query)
+                print(query_list)
+            else: 
                 #only range and level
-                # SELECT professor.prof_id, professor.name, prof_sec.course_name, course.level
-                #     FROM prof_sec 
-                #     INNER JOIN professor ON prof_sec.prof_id=professor.prof_id 
-                #     LEFT JOIN course ON course.course_name = prof_sec.course_name
-                #     WHERE course.level = ? AND (professor.prof_id, prof_sec.course_name) IN (SELECT prof_id, course_name 
-                #                                                             FROM reviews WHERE review_id = (SELECT review_id FROM ratings WHERE ...));
+                query_list = filter_acc_level_ratings(level_query, rating)
+                print(query_list)
     else: #the branch where prof is not empty
-        if (level is empty):
-            if (range is empty):
-                return None
+        if (level_query == None):
+            if (workload_start == "0" and workload_end == "0"):
                 #only text - simply return all course + instructor tuples matching that text
-                #simply call get_prof_course_comb
+                query_list = get_prof_course_comb(prof_course_query)
+                print(query_list)
             else:
-                return None
                 #only text and range
-                #Add the nested query for range next to the last line in get_prof_course_comb
+                query_list = filter_acc_prof_course_ratings(prof_course_query, rating)
+                print(query_list)
         else: #level is not empty
-            if (range is empty):
-                return None
+            if (workload_start == "0" and workload_end == "0"):
                 #text and level
-                #simply add an 'AND level = ?' in get_prof_course_comb
+                query_list = filter_acc_prof_course_level(prof_course_query, level_query)
+                print(query_list)
             else:
-                return None
-                #text, level and range
-                #For a particular course+instructor tuple, filter it through range and level 
+                #text, level and range 
+                query_list = filter_acc_all(prof_course_query, level_query, rating)
+                print(query_list)
+
+    combo_list = get_cards(query_list)
+
+    if no_query == True: status = "No query"
+    else: status = len(combo_list)
 
     #Send the data recieved 
     context = {
-        'status': 0
+        'status': status,
+        'combined_list': combo_list
     }
 
     return render(request, 'search/search_combo.html', context)
 
 def search_combo(request):
-    comb_list = []
+    combo_list = []
 
     # Getting search results from homepage
     query = request.GET.get('search_query')
@@ -181,22 +180,12 @@ def search_combo(request):
         return render(request, 'search/search_combo.html', context)
     
     result_comb = get_prof_course_comb(query)
-
-    #for each pair - get the ratings if any 
-    for row in result_comb:
-        #getting the ratings
-        rating_tuple = get_ratings(row[0], row[2])
-        if rating_tuple is not None:
-            ratings = np.array(rating_tuple)
-            cum_ratings = np.round(np.mean(ratings, axis = 0, dtype = np.float64), 2)
-        else:
-            cum_ratings = [-1]
-        comb_list.append({'prof_id': row[0], 'prof_name': row[1], 'course_name': row[2], 'level': row[3], 'ratings': cum_ratings})
+    combo_list = get_cards(result_comb)
     
     #Send the data recieved    
     context = {
-        'status': len(comb_list),
-        'combined_list': comb_list
+        'status': len(combo_list),
+        'combined_list': combo_list
     }
 
     return render(request, 'search/search_combo.html', context)

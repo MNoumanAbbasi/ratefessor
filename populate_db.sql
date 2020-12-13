@@ -59,6 +59,11 @@ INSERT INTO section (course_name, semester, year) VALUES ('Databases', 'Fall', 2
 -- Adding prof_sec
 INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (1, 'Intro. to Computer Science', 'Fall', 2019);
 INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (2, 'Intro. to Computer Science', 'Spring', 2019);
+INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (3, 'Intro. to Computer Science', 'Fall', 2020);
+INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (4, 'Intro. to Computer Science', 'Fall', 2020);
+INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (5, 'Quantum Computing', 'Spring', 2019);
+INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (6, 'Databases', 'Spring', 2020);
+INSERT INTO prof_sec (prof_id, course_name, semester, year) VALUES (6, 'Calculus', 'Spring', 2020);
 
 -- Adding offers
 INSERT INTO offers (course_code, course_name, dept_name) VALUES ('CS100', 'Intro. to Computer Science', 'Computer Science');
@@ -66,7 +71,8 @@ INSERT INTO offers (course_code, course_name, dept_name) VALUES ('CS105', 'Intro
 INSERT INTO offers (course_code, course_name, dept_name) VALUES ('MATH230', 'Probability', 'Mathematics');
 
 -- Adding reviews
--- INSERT INTO review VALUES (1,1,'Test review.','2020-12-3',1,'Intro. to Computer Science','Fall',2019);
+INSERT INTO review VALUES (1,1,'Test review.','2020-12-3',1,'Intro. to Computer Science','Fall',2019);
+INSERT INTO review VALUES (6, 50,'Test review.', CURRENT_TIMESTAMP,6,'Databases','Spring',2020);
 
 -- Adding ratings
 -- INSERT INTO rating VALUES (1,4,5,3);
