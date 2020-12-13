@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+{% include "navbar.html" %}
+<div class="container top-header p-1">
+    <div class="mt-2 mb-1">
+    {% for result in results %}
+<p class="roboto-font">{{ result }}</p>
+{% endfor %}
+</div>
+{% endblock content %}
+</div>

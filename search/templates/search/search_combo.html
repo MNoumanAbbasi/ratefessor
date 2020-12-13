@@ -97,11 +97,11 @@
           <h6 class="card-subtitle mb-2 text-muted">
             {{ item.level }}
           </h6>
-          {% if item.ratings.0 == -1 %} <p class="card-text"> No ratings yet </p>
+          {% if item.ratings.0 == -1 %} <p class="roboto-font"> No ratings yet </p>
           {% else %} 
-          <p class="card-text"> Ratings:<br> Workload - {{ item.ratings.0 }}<br>Learning - {{ item.ratings.1 }}<br>Grading - {{ item.ratings.2 }}</p>
+          <p class="roboto-font"> Workload - {{ item.ratings.0 }}<br>Learning - {{ item.ratings.1 }}<br>Grading - {{ item.ratings.2 }}</p>
           {% endif %}
-          <a href="{% url 'combo-profile' item.prof_id item.course_name %}" class="card-link"> View reviews </a>
+          <a href="{% url 'combo-profile' item.prof_id item.course_name %}" class="card-link"> View offering </a>
         </div>
       </div>
     </div>

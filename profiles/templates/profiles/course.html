@@ -53,10 +53,7 @@
           <h6 class="card-subtitle mb-2 text-muted">
             {{ professor.position }}
           </h6>
-          <p class="card-text">Rating?</p>
-          <a href="{% url 'professor-profile' professor.id %}" class="card-link"
-            >View professor</a
-          >
+          <a href="{% url 'combo-profile' professor.id course.course_name %}" class="card-link">View offering</a>
         </div>
       </div>
     </div>
@@ -64,7 +61,31 @@
   </div>
 
   <!-- Reviews block -->
-  <hr />
+    <hr />
+    <h2 class="text-center roboto-font font-weight-bold">All Reviews</h2>
+  
+    <!-- <div class="row">
+      {% for review in reviews %}
+      {% if user.id == review.user_id %}
+      {% include "profiles/review_card.html" %}
+      {% endif %}
+      {% endfor %}
+    </div> -->
+  
+    <hr/>
+    <!-- <hr />
+    <h4 class="text-center roboto-font">All reviews</h4>
+    <hr /> -->
+    <div class="row">
+      {% for review in reviews %}
+      {% if user.id != review.user_id %}
+      {% include "profiles/review_card.html" %}
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  
+  <!-- <hr />
   <h3 class="text-center roboto-font">Reviews</h3>
   <hr />
 
@@ -88,6 +109,6 @@
     </div>
     {% endfor %}
   </div>
-</div>
+</div> -->
 
 {% endblock content %}

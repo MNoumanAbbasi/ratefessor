@@ -5,19 +5,15 @@ from .db_helpers import *
 # Create your views here.
 
 def loading(request):
-    prof = request.GET.get('professor')
-    course = request.GET.get('course')
-    comb = request.GET.get('combined')
+    options = request.GET.get('option')
 
-    print(prof)
-    print(course)
-    print(comb)
+    print(options)
 
-    if prof == "1" and course == "0" and comb == "0":
+    if options == "prof":
         return search_professor(request)
-    elif course == "1" and prof == "0" and comb == "0":
+    elif options == "course":
         return search_course(request)
-    elif comb == "1" and course == "0" and prof == "0":
+    elif options == "comb":
         return search_combo(request)
     else:
         return HttpResponseBadRequest('Choose one option!')

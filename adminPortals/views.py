@@ -13,7 +13,7 @@ def executor(request):
             
         result = execute_query(query)
         if (result):
-            return HttpResponseBadRequest(result)
+            return render(request, 'adminPortals/executor.html', {"results": result} )
         else:
             return HttpResponseBadRequest("Command Executed")
     else:

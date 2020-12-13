@@ -54,8 +54,7 @@
           <h6 class="card-subtitle mb-2 text-muted">
             {{ course.semester }}, {{ course.year }}
           </h6>
-          <p class="card-text">Rating?</p>
-          <a href="{% url 'course-profile' course.name %}" class="card-link">View course</a>
+          <a href="{% url 'combo-profile' professor.id course.name %}" class="card-link">View offering</a>
         </div>
       </div>
     </div>
@@ -64,25 +63,25 @@
 
   <!-- Reviews block -->
   <hr />
-  <h3 class="text-center roboto-font">Reviews</h3>
-  <hr />
+  <h2 class="text-center roboto-font font-weight-bold">All Reviews</h2>
 
+  <!-- <div class="row">
+    {% for review in reviews %}
+    {% if user.id == review.user_id %}
+    {% include "profiles/review_card.html" %}
+    {% endif %}
+    {% endfor %}
+  </div> -->
+
+  <hr/>
+  <!-- <hr />
+  <h4 class="text-center roboto-font">All reviews</h4>
+  <hr /> -->
   <div class="row">
     {% for review in reviews %}
-    <div class="col-sm-12">
-      <div class="card mb-3">
-        <div class="card-body">
-          <p class="card-text float-right"><i class="fa fa-star"></i>Rating</p>
-          <h5 class="card-title">{{ review.course_name }}</h5>
-          <p class="card-text">{{ review.text }}</p>
-
-          <small class="text-muted font-italic float-right">User: {{ review.user_id }}</small>
-          <p class="card-text">
-            <small class="text-muted">{{ review.date }}</small>
-          </p>
-        </div>
-      </div>
-    </div>
+    {% if user.id != review.user_id %}
+    {% include "profiles/review_card.html" %}
+    {% endif %}
     {% endfor %}
   </div>
 </div>

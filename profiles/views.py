@@ -65,15 +65,18 @@ def course(request, course_name):
 
     # Now fetching all the professors that offered this course
     professors = get_profs_of_course(course_name)
-
+    print(professors)
     # Calculating averages
-    _, avgs = get_reviews_ratings(course_name=course_name)
+    reviews, avgs = get_reviews_ratings(course_name=course_name)
 
     context = {
         'professors': professors,
         'course': course,
-        'avgs': avgs
+        'avgs': avgs,
+        'reviews': reviews
     }
+
+
 
     return render(request, 'profiles/course.html', context)
 
